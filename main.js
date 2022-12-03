@@ -13,7 +13,7 @@ window.onload = getData
 
 myForm.addEventListener('submit', onSubmit);
 
-function onSubmit(e) {
+async function onSubmit(e) {
   e.preventDefault();
 
   if (descriptionInput.value === '' || amountInput.value === '') {
@@ -30,15 +30,15 @@ function onSubmit(e) {
       desc : descriptionInput.value,
       category: categoriesInput.value
     }
-    axios.post(url + "/expenses" ,details)
-    .then(res =>showUser(res.data))
-    .catch(err => {
-        msg.classList.add('alert')
+    try {
+      const response = await axios.post(url + "/expenses" ,details)
+      showUser(response.data)
+    } catch (err) {
+      msg.classList.add('alert')
         msg.innerHTML = err
         // Remove error after 3 seconds
         setTimeout(() => msg.remove(), 3000)
-    })
-
+    }
     amountInput.value = ''
     descriptionInput.value = ''
 
@@ -46,17 +46,15 @@ function onSubmit(e) {
 }
 
 
-function deleteItem(id) {
-  axios.delete(`${url}/expenses/${id}`)
-  .then(() => {
+async function deleteItem(id) {
+  try {
+    await axios.delete(`${url}/expenses/${id}`)
     list.removeChild(document.getElementById(id))
-  })
-  .catch(err => {
-      msg.classList.add('alert')
+  } catch (err) {
+    msg.classList.add('alert')
       msg.innerHTML = err
-      // Remove error after 3 seconds
       setTimeout(() => msg.remove(), 3000)
-  })  
+  }
 
 }
 
@@ -71,28 +69,27 @@ function edit(id) {
  
 }
 
-function update(id) {
+async function update(id) {
  
-  axios.put(`${url}/expenses/${id}`, {
+  await axios.put(`${url}/expenses/${id}`, {
     amount : amountInput.value,
     desc : descriptionInput.value,
     category : categoriesInput.value 
   })
-  .then(() => getData())
-
+ getData()
 }
 
-function getData() {
-  axios.get(url + "/expenses")
-  .then(res => {
+async function getData() {
+
+  try {
+    const res = await axios.get(url + "/expenses")
     res.data.forEach(obj => showUser(obj))
-  })
-  .catch(err => {
-      msg.classList.add('alert')
-      msg.innerHTML = err
-      // Remove error after 3 seconds
-      setTimeout(() => msg.remove(), 3000)
-  })
+    
+  } catch (err) {
+    msg.classList.add('alert')
+    msg.innerHTML = err
+    setTimeout(() => msg.remove(), 3000)
+  }
 
 }
 
