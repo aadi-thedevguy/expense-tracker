@@ -5,9 +5,12 @@ const amountInput = document.querySelector('#amount')
 const categoriesInput = document.querySelector('#category')
 const msg = document.querySelector('.msg')
 const list = document.querySelector('#list')
-const updateBtn = document.querySelector('#update')
 
-const url = "https://crudcrud.com/api/df87b5ba0fa64767aff198c242375301"
+const selectOptions = Array.from(categoriesInput.options)
+const updateBtn = document.createElement('button')
+
+
+const url = "https://crudcrud.com/api/51686d69a5c3412ba267a1239af1999b"
 
 window.onload = getData
 
@@ -59,25 +62,44 @@ async function deleteItem(id) {
 }
 
 function edit(id) {
-  let textArray = document.getElementById(id).firstElementChild.textContent.split('-')
-  amountInput.value = textArray[0]
-  descriptionInput.value = textArray[1]
-  categoriesInput.value = textArray[2]
+  const textArray = document.getElementById(id).firstElementChild.textContent.split('-')
 
-  updateBtn.disabled = false
-  updateBtn.onclick = update(id)
- 
+  amountInput.value = textArray[0].trim()
+  descriptionInput.value = textArray[1].trim()
+  const optionToSelect = selectOptions.find(item => item.value === textArray[2].trim());
+  optionToSelect.selected = true
+
+  updateBtn.id = id
+  updateBtn.className = "btn btn-success mt-3" 
+  updateBtn.innerText = "Update"
+  myForm.appendChild(updateBtn)
+
 }
 
 async function update(id) {
- 
-  await axios.put(`${url}/expenses/${id}`, {
+  let details =  {
     amount : amountInput.value,
     desc : descriptionInput.value,
-    category : categoriesInput.value 
-  })
- getData()
+    category : categoriesInput.value
+  }
+ try {
+  await axios.put(`${url}/expenses/${id}`, details)
+  // document.removeChild()
+  console.log(list.querySelector(`#${id}`))
+  list.innerHTML = ""
+  const res = await axios.get(`${url}/expenses/${id}`)
+  showUser(res.data)
+
+} catch (err) {
+  msg.classList.add('alert')
+  msg.innerHTML = err
+  setTimeout(() => msg.remove(), 3000)
 }
+}
+
+updateBtn.addEventListener('click', (e) => {
+  update(e.target.id)
+})
 
 async function getData() {
 
@@ -94,8 +116,9 @@ async function getData() {
 }
 
 function showUser(details) {
-  list.innerHTML = list.innerHTML + `<li class="list-group-item" id=${details._id}>
+
+  list.innerHTML  += `<li class="list-group-item" id=${details._id}>
   <span>${details.amount} - ${details.desc} - ${details.category}</span>
  <button class="btn btn-danger" onclick=deleteItem('${details._id}')>X</button>
- <button class="btn btn-success" onclick="edit('${details._id}')">Edit</button></li> `
+ <button class="btn btn-success" onclick="edit('${details._id}')">Edit</button></li>`
  }
