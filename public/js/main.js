@@ -9,10 +9,11 @@ const selectOptions = Array.from(categoriesInput.options);
 const updateBtn = document.createElement("button");
 
 updateBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   update(e.target.id);
 });
 
-const url = 'http://localhost:3000/expenses/'
+const url = "http://localhost:3000/expenses/";
 
 window.onload = getData;
 
@@ -61,13 +62,13 @@ async function getData() {
 function showUser(details) {
   list.innerHTML += `<li class="list-group-item" id=${details.id}>
     <span>${details.amount} - ${details.desc} - ${details.category}</span>
-   <button class="btn btn-danger" onclick=deleteItem('${details.id}')>X</button>`
-  //  <button class="btn btn-success" onclick="edit('${details.id}')">Edit</button></li>
+   <button class="btn btn-danger" onclick=deleteItem('${details.id}')>X</button>
+  <button class="btn btn-success" onclick="edit('${details.id}')">Edit</button></li>`;
 }
 
 async function deleteItem(id) {
   try {
-    await axios.delete(url + id)
+    await axios.delete(url + id);
     list.removeChild(document.getElementById(id));
   } catch (err) {
     msg.classList.add("alert");
@@ -102,14 +103,14 @@ async function update(id) {
   };
   try {
     const res = await axios.put(url + id, details);
-    // list.removeChild(document.getElementById(id));
-    console.log(res.data);
-    window.location = '/'
+   list.innerHTML = ""
+   getData()
   } catch (err) {
     msg.classList.add("alert");
     msg.innerHTML = err;
     setTimeout(() => msg.remove(), 3000);
   }
+
+  amountInput.value = ''
+  descriptionInput.value = ''
 }
-
-

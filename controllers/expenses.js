@@ -33,7 +33,7 @@ exports.deleteExpense = (req, res) => {
 
 exports.updateExpense = (req, res) => {
   const id = req.params.id;
-  // console.log(req.body)
+  // console.log(id)
   Expense.update(
     {
       amount: req.body.amount,
