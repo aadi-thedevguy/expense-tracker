@@ -27,19 +27,8 @@
 
     <section class="container-sm">
       <form id="my-form" class="w-50 mx-auto">
-        <h1 class="text-center">Sign Up</h1>
+        <h1 class="text-center">Log In to Your Account</h1>
         <div class="msg alert-warning" role="alert"></div>
-        <div class="mb-3">
-          <label for="name" class="form-label">Your Name :</label>
-          <input
-            type="text"
-            id="name"
-            class="form-control"
-            placeholder="Your Name"
-            required
-            minlength="7"
-          />
-        </div>
         <div class="mb-3">
           <label for="email" class="form-label">Your Email :</label>
           <input
@@ -52,18 +41,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="confirmPass" class="form-label">Password :</label>
-          <input
-            type="password"
-            id="confirmPass"
-            required
-            minlength="7"
-            class="form-control"
-            placeholder="******"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Confirm Password :</label>
+          <label for="password" class="form-label">Your Password :</label>
           <input
             type="password"
             id="password"
@@ -74,14 +52,14 @@
           />
         </div>
 
-        <input class="btn btn-secondary mt-3" type="submit" value="Sign Up" />
+        <input class="btn btn-secondary mt-3" type="submit" value="Log In" />
         <p>
-          Already have an Account ?
-          <a href="/" class="link-primary">Log In</a>
+          Don't Have an Account ?
+          <a href="/signup" class="link-primary">Sign Up</a>
         </p>
       </form>
     </section>
 
-    <script src="/js/signup.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>
