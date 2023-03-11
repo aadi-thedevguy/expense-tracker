@@ -18,10 +18,11 @@ async function onSubmit(e) {
   };
   try {
     const res = await axios.post(url + "login", details);
-
     msg.classList.add("alert");
     msg.innerHTML = res.data.msg;
-    setTimeout(() => msg.remove(), 3000);
+
+    // setTimeout(() => msg.remove(), 3000)
+    window.location.href = '/home'
 
   } catch (err) {
     errorMsg.classList.add("alert");

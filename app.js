@@ -4,6 +4,8 @@ const dotenv = require('dotenv')
 dotenv.config()
 const cors = require('cors')
 
+const Expense = require('./models/expense')
+const User = require('./models/user')
 const sequelize = require('./util/database')
 const errorController = require('./controllers/error')
 const expenseRoutes = require('./routes/expenses')
@@ -30,7 +32,9 @@ app.use('/users', userRoutes)
 app.use('/expenses', expenseRoutes)
 app.use(errorController.get404)
 
-sequelize.authenticate().then(() => {
+// User.hasMany(Expense);
+// Expense.belongsTo(User);
+sequelize.sync().then(() => {
     app.listen(3000)
     console.log(`App Running Successfully on http://localhost:3000`)
 }).catch(err => console.log(err))
