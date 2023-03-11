@@ -16,7 +16,10 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req,res) => {
-    res.sendFile(path.resolve(__dirname,'views','index.html'))
+    res.sendFile(path.resolve(__dirname,'views','expense.html'))
+})
+app.get('/signup', (req,res) => {
+    res.sendFile(path.resolve(__dirname,'views','signup.html'))
 })
 app.use('/expenses', expenseRoutes)
 app.use(errorController.get404);
