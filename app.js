@@ -30,7 +30,7 @@ app.use('/users', userRoutes)
 app.use('/expenses', expenseRoutes)
 app.use(errorController.get404)
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.authenticate().then(() => {
     app.listen(3000)
     console.log(`App Running Successfully on http://localhost:3000`)
 }).catch(err => console.log(err))

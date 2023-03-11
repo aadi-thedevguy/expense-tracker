@@ -37,16 +37,17 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
-    let decryptedPass = await bcrypt.compare(password, user.password);
-    if (user && decryptedPass) {
-      res.status(200).json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      });
-    } else {
-      res.status(400).json({ msg: "Invalid Credentials" });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
     }
+
+    const decryptedPass = await bcrypt.compare(password, user.password);
+    if (decryptedPass === false) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    res.status(200).json({ msg: "User Login Successful" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Internal Server Error" });
@@ -55,7 +56,7 @@ exports.login = async (req, res) => {
 
 // generate JWT
 const generateToken = (id) => {
-  return jwt.sign({id},process.env.JWT_SECRET,{
-      expiresIn : '30d'
-  })
-}
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
