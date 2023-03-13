@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ msg: "User not authorized" });
     }
 
-    res.status(200).json({ msg: "User Login Successful" });
+    res.status(200).json({ msg: "User Login Successful", token : generateToken(user.id) });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Internal Server Error" });
@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
 
 // generate JWT
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ userId : id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };

@@ -20,8 +20,7 @@ async function onSubmit(e) {
     const res = await axios.post(url + "login", details);
     msg.classList.add("alert");
     msg.innerHTML = res.data.msg;
-
-    // setTimeout(() => msg.remove(), 3000)
+    localStorage.setItem('token', res.data.token)
     window.location.href = '/home'
 
   } catch (err) {

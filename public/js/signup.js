@@ -13,9 +13,7 @@ myForm.addEventListener("submit", onSubmit);
 async function onSubmit(e) {
   e.preventDefault();
 
-  if (
-    passwordInput.value !== confirmPass.value
-  ) {
+  if (passwordInput.value !== confirmPass.value) {
     msg.classList.add("alert");
     msg.innerHTML = "Password Don't Match";
 
@@ -29,7 +27,8 @@ async function onSubmit(e) {
     };
     try {
       const response = await axios.post(url + "signup", details);
-      console.log(response.data);
+      // console.log(response.data);
+      window.location.href = "/";
     } catch (err) {
       msg.classList.add("alert");
       msg.innerHTML = err;

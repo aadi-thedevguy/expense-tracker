@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
+const User = require('./user');
 
 const Expense = sequelize.define('expense', {
   id: {
@@ -21,7 +22,16 @@ const Expense = sequelize.define('expense', {
   category: {
     type: Sequelize.STRING,
     allowNull: false
-  }
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+
+    references: {
+      model: User,
+      // This is the column name of the referenced model
+      key: 'id',
+    }
+  },
 });
 
 module.exports = Expense;

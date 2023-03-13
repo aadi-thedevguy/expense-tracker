@@ -8,6 +8,13 @@ const list = document.querySelector("#list");
 const selectOptions = Array.from(categoriesInput.options);
 const updateBtn = document.createElement("button");
 
+const token = localStorage.getItem('token')
+const config = {
+    headers : {
+      'Authorization': token
+    }
+  }
+
 updateBtn.addEventListener("click", (e) => {
   e.preventDefault();
   update(e.target.id);
@@ -33,9 +40,10 @@ async function onSubmit(e) {
       amount: amountInput.value,
       desc: descriptionInput.value,
       category: categoriesInput.value,
+      userId : 1
     };
     try {
-      const response = await axios.post(url + "add-expense", details);
+      const response = await axios.post(url + "add-expense", details,config);
       showUser(response.data);
     } catch (err) {
       msg.classList.add("alert");
@@ -49,8 +57,9 @@ async function onSubmit(e) {
 }
 
 async function getData() {
+
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, config);
     res.data.forEach((obj) => showUser(obj));
   } catch (err) {
     msg.classList.add("alert");
@@ -68,7 +77,7 @@ function showUser(details) {
 
 async function deleteItem(id) {
   try {
-    await axios.delete(url + id);
+    await axios.delete(url + id, config);
     list.removeChild(document.getElementById(id));
   } catch (err) {
     msg.classList.add("alert");
@@ -102,7 +111,7 @@ async function update(id) {
     category: categoriesInput.value,
   };
   try {
-    const res = await axios.put(url + id, details);
+    const res = await axios.put(url + id,config, details);
    list.innerHTML = ""
    getData()
   } catch (err) {

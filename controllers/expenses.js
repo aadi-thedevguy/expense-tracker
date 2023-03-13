@@ -16,7 +16,9 @@ exports.addExpense = (req, res) => {
 };
 
 exports.getExpenses = (req, res) => {
-  Expense.findAll()
+  Expense.findAll({
+    where : { userId : req.user.id }
+  })
     .then((result) => {
       return res.json(result);
     })
@@ -39,6 +41,7 @@ exports.updateExpense = (req, res) => {
       amount: req.body.amount,
       desc: req.body.desc,
       category: req.body.category,
+      userId : req.body.userId
     },
     {
       where: { id: id },

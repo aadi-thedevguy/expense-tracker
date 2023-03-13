@@ -32,8 +32,8 @@ app.use('/users', userRoutes)
 app.use('/expenses', expenseRoutes)
 app.use(errorController.get404)
 
-// User.hasMany(Expense);
-// Expense.belongsTo(User);
+Expense.belongsTo(User);
+User.hasMany(Expense);
 sequelize.sync().then(() => {
     app.listen(3000)
     console.log(`App Running Successfully on http://localhost:3000`)
